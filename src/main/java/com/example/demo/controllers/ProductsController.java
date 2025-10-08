@@ -40,7 +40,7 @@ public class ProductsController {
     @PostMapping
     public FakeStoreCreateProductResponseDTO createProduct(@RequestBody AddProductDTO addProductDTO) throws IOException{
         System.out.println("Started Product Creation");
-      FakeStoreCreateProductResponseDTO response=  productsService.createProduct(addProductDTO);
+        FakeStoreCreateProductResponseDTO response=  productsService.createProduct(addProductDTO);
         return response ;
     }
 

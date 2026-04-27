@@ -1,25 +1,25 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.*;
+import com.example.demo.dto.ProductWIthCategoryDTO;
+import com.example.demo.dto.ProductsDTO;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public interface IProductsService {
 
-    List<ProductsDTO> getAllProducts() throws IOException;
+    List<ProductsDTO> getAllProducts();
 
-    ProductsDTO getSpecificProduct(Integer id) throws Exception;
+    ProductsDTO getProductById(Long id) throws Exception;
 
-    FakeStoreCreateProductResponseDTO createProduct(AddProductDTO addProductDTO) throws IOException;
+    ProductsDTO createProduct(ProductsDTO productDTO);
 
-    FakeStoreUpdateProductResponseDTO updateProduct(int id,UpdateProductDTO updateProductDTO)throws IOException;
-    FakeStoreDeleteProductResponseDTO deleteProduct(int id)throws IOException;
-    ProductsDTO createProductInDB(ProductsDTO productsDTO);
-    List<ProductsDTO> getAllProductsFromDB();
-    ProductsDTO getSpecificProductByIDFromDB(Long ID) throws Exception;
+    ProductsDTO updateProduct(Long id, ProductsDTO productDTO) throws Exception;
+
+    void deleteProduct(Long id);
+
     ProductWIthCategoryDTO productWithCategory(Long id) throws Exception;
-     List<ProductsDTO> getExpensiveProducts(Long minPrice);
-     List<ProductsDTO> getProductByProductName(String productname);
+
+    List<ProductsDTO> getExpensiveProducts(Long minPrice);
+
+    List<ProductsDTO> getProductByProductName(String productname);
 }

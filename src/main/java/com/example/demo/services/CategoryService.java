@@ -7,8 +7,6 @@ import com.example.demo.entities.Category;
 import com.example.demo.mappers.CategoryMapper;
 import com.example.demo.mappers.ProductMappers;
 import com.example.demo.repository.CategoryRepository;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,7 +15,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Primary
 public class CategoryService implements ICategoryService{
     private final CategoryRepository categoryRepository;
 

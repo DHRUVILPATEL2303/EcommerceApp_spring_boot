@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products – Ecommerce App</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<header class="navbar">
+    <a href="index.html" class="brand">🛒 EcommerceApp</a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html" class="active">Products</a>
+        <a href="categories.html">Categories</a>
+    </nav>
+</header>
+
+<!-- ── Hero ── -->
+<div class="page-hero">
+    <h1>📦 Products</h1>
+    <p>Browse, create, update &amp; delete products through the FakeStore API and the local database.</p>
+</div>
+
+<main>
+
+    <!-- ════════════════════════════════════════
+         SECTION 1 – FakeStore Products
+    ═══════════════════════════════════════════ -->
+    <h2 style="margin-bottom:1rem;font-size:1.15rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">
+        FakeStore Integration
+    </h2>
+
+    <!-- GET all products -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Get All Products</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products</code>
+        </div>
+        <p style="font-size:.9rem;color:var(--muted);margin-bottom:1rem;">
+            Fetches every product from the FakeStore API and renders them as cards.
+        </p>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="getAllProducts()">
+                ▶ Fetch All Products
+            </button>
+        </div>
+        <div class="loader" id="loader-all"></div>
+        <div id="result-all" class="result-box"></div>
+        <div id="product-grid-all" class="product-grid"></div>
+    </div>
+
+    <!-- GET product by ID -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Get Product by ID</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products/{id}</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="get-product-id">Product ID</label>
+                <input type="number" id="get-product-id" placeholder="e.g. 1" min="1" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="getProductById()">▶ Fetch Product</button>
+        </div>
+        <div class="loader" id="loader-get-id"></div>
+        <div id="result-get-id" class="result-box"></div>
+    </div>
+
+    <!-- POST create product -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-post">POST</span>
+            <h2>Create Product (FakeStore)</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="create-title">Title *</label>
+                <input type="text" id="create-title" placeholder="e.g. Apple Vision Pro" />
+            </div>
+            <div class="form-group">
+                <label for="create-brand">Brand</label>
+                <input type="text" id="create-brand" placeholder="e.g. Apple" />
+            </div>
+            <div class="form-group">
+                <label for="create-model">Model</label>
+                <input type="text" id="create-model" placeholder="e.g. First Gen" />
+            </div>
+            <div class="form-group">
+                <label for="create-color">Color</label>
+                <input type="text" id="create-color" placeholder="e.g. Black" />
+            </div>
+            <div class="form-group">
+                <label for="create-category">Category</label>
+                <input type="text" id="create-category" placeholder="e.g. electronics" />
+            </div>
+            <div class="form-group">
+                <label for="create-discount">Discount (%)</label>
+                <input type="number" id="create-discount" placeholder="e.g. 10" min="0" max="100" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="createProduct()">✚ Create Product</button>
+            <button class="btn btn-secondary" onclick="clearForm('create')">✕ Clear</button>
+        </div>
+        <div class="loader" id="loader-create"></div>
+        <div id="result-create" class="result-box"></div>
+    </div>
+
+    <!-- PUT update product -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-put">PUT</span>
+            <h2>Update Product (FakeStore)</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products/{id}</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="update-id">Product ID *</label>
+                <input type="number" id="update-id" placeholder="e.g. 1" min="1" />
+            </div>
+            <div class="form-group">
+                <label for="update-model">New Model</label>
+                <input type="text" id="update-model" placeholder="e.g. Second Gen" />
+            </div>
+            <div class="form-group">
+                <label for="update-color">New Color</label>
+                <input type="text" id="update-color" placeholder="e.g. Blue" />
+            </div>
+            <div class="form-group">
+                <label for="update-discount">New Discount (%)</label>
+                <input type="number" id="update-discount" placeholder="e.g. 47" min="0" max="100" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="updateProduct()">✎ Update Product</button>
+            <button class="btn btn-secondary" onclick="clearForm('update')">✕ Clear</button>
+        </div>
+        <div class="loader" id="loader-update"></div>
+        <div id="result-update" class="result-box"></div>
+    </div>
+
+    <!-- DELETE product -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-delete">DELETE</span>
+            <h2>Delete Product (FakeStore)</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products/{id}</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="delete-id">Product ID *</label>
+                <input type="number" id="delete-id" placeholder="e.g. 1" min="1" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-danger" onclick="deleteProduct()">🗑 Delete Product</button>
+        </div>
+        <div class="loader" id="loader-delete"></div>
+        <div id="result-delete" class="result-box"></div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         SECTION 2 – DB Products
+    ═══════════════════════════════════════════ -->
+    <h2 id="db-section" style="margin-bottom:1rem;margin-top:2rem;font-size:1.15rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">
+        Database Products
+    </h2>
+
+    <!-- POST create product in DB -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-post">POST</span>
+            <h2>Create Product in DB</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products/db/create</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="db-create-title">Title *</label>
+                <input type="text" id="db-create-title" placeholder="e.g. Samsung Galaxy S25" />
+            </div>
+            <div class="form-group">
+                <label for="db-create-brand">Brand</label>
+                <input type="text" id="db-create-brand" placeholder="e.g. Samsung" />
+            </div>
+            <div class="form-group">
+                <label for="db-create-model">Model</label>
+                <input type="text" id="db-create-model" placeholder="e.g. S25 Ultra" />
+            </div>
+            <div class="form-group">
+                <label for="db-create-color">Color</label>
+                <input type="text" id="db-create-color" placeholder="e.g. Titanium Black" />
+            </div>
+            <div class="form-group">
+                <label for="db-create-price">Price</label>
+                <input type="number" id="db-create-price" placeholder="e.g. 1299" min="0" />
+            </div>
+            <div class="form-group">
+                <label for="db-create-discount">Discount (%)</label>
+                <input type="number" id="db-create-discount" placeholder="e.g. 15" min="0" max="100" />
+            </div>
+            <div class="form-group">
+                <label for="db-create-image">Image URL</label>
+                <input type="url" id="db-create-image" placeholder="https://example.com/image.jpg" />
+            </div>
+            <div class="form-group">
+                <label for="db-create-category-id">Category ID</label>
+                <input type="number" id="db-create-category-id" placeholder="e.g. 1" min="1" />
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="db-create-desc">Description</label>
+                <textarea id="db-create-desc" placeholder="Product description…"></textarea>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="createProductInDB()">✚ Save to DB</button>
+            <button class="btn btn-secondary" onclick="clearForm('db-create')">✕ Clear</button>
+        </div>
+        <div class="loader" id="loader-db-create"></div>
+        <div id="result-db-create" class="result-box"></div>
+    </div>
+
+    <!-- GET all products from DB -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Get All Products from DB</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products/db</code>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="getProductsFromDB()">▶ Fetch DB Products</button>
+        </div>
+        <div class="loader" id="loader-db-all"></div>
+        <div id="result-db-all" class="result-box"></div>
+        <div id="product-grid-db" class="product-grid"></div>
+    </div>
+
+    <!-- GET product by ID from DB -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Get DB Product by ID</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products/db/{id}</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="db-get-id">Product ID</label>
+                <input type="number" id="db-get-id" placeholder="e.g. 1" min="1" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="getDBProductById()">▶ Fetch</button>
+        </div>
+        <div class="loader" id="loader-db-get-id"></div>
+        <div id="result-db-get-id" class="result-box"></div>
+    </div>
+
+    <!-- GET product with category -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Get Product with Category</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products/db/product/categories/{id}</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="prod-cat-id">Product ID</label>
+                <input type="number" id="prod-cat-id" placeholder="e.g. 1" min="1" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="getProductWithCategory()">▶ Fetch</button>
+        </div>
+        <div class="loader" id="loader-prod-cat"></div>
+        <div id="result-prod-cat" class="result-box"></div>
+    </div>
+
+    <!-- GET expensive products -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Get Products Above Min Price</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products/db/product/{minprice}</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="min-price">Minimum Price</label>
+                <input type="number" id="min-price" placeholder="e.g. 500" min="0" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="getExpensiveProducts()">▶ Search</button>
+        </div>
+        <div class="loader" id="loader-expensive"></div>
+        <div id="result-expensive" class="result-box"></div>
+    </div>
+
+    <!-- GET products by name -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Search Products by Name</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/products/db/product/productname/{name}</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="search-name">Product Name</label>
+                <input type="text" id="search-name" placeholder="e.g. Samsung" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="searchByName()">🔍 Search</button>
+        </div>
+        <div class="loader" id="loader-search-name"></div>
+        <div id="result-search-name" class="result-box"></div>
+    </div>
+
+</main>
+
+<script>
+    /* ── Helpers ── */
+    function showLoader(id)  { document.getElementById(id).classList.add('visible'); }
+    function hideLoader(id)  { document.getElementById(id).classList.remove('visible'); }
+
+    function showResult(id, data, isError) {
+        const el = document.getElementById(id);
+        el.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+        el.className = 'result-box visible ' + (isError ? 'error' : 'success');
+    }
+
+    function renderProductGrid(containerId, products) {
+        const grid = document.getElementById(containerId);
+        if (!Array.isArray(products) || products.length === 0) {
+            grid.innerHTML = '<p style="color:var(--muted);padding:.5rem">No products found.</p>';
+            return;
+        }
+        grid.innerHTML = products.map(p => `
+            <div class="product-card">
+                ${p.image ? `<img class="pc-img" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title || '')}"/>` : ''}
+                <div class="pc-title">${escapeHtml(p.title || '—')}</div>
+                <div class="pc-meta">Brand: ${escapeHtml(p.brand || '—')} &nbsp;|&nbsp; Model: ${escapeHtml(p.model || '—')}</div>
+                <div class="pc-meta">Color: ${escapeHtml(p.color || '—')}</div>
+                ${p.description ? `<div class="pc-meta" style="margin-top:.4rem;">${escapeHtml(truncate(p.description, 80))}</div>` : ''}
+                <div class="pc-price">$${p.price ?? '—'} ${p.discount ? `<span style="font-size:.8rem;color:var(--success)">-${p.discount}%</span>` : ''}</div>
+            </div>`).join('');
+        grid.querySelectorAll('img.pc-img').forEach(img => {
+            img.addEventListener('error', () => img.classList.add('img-error'));
+        });
+    }
+
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;');
+    }
+
+    function truncate(str, maxLen) {
+        const s = String(str);
+        if ([...s].length <= maxLen) return s;
+        return [...s].slice(0, maxLen).join('') + '…';
+    }
+
+    async function apiFetch(url, options = {}) {
+        const response = await fetch(url, {
+            headers: { 'Content-Type': 'application/json' },
+            ...options
+        });
+        const text = await response.text();
+        try { return { ok: response.ok, data: JSON.parse(text) }; }
+        catch { return { ok: response.ok, data: text }; }
+    }
+
+    function clearForm(prefix) {
+        document.querySelectorAll(`[id^="${prefix}-"]`).forEach(el => {
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.value = '';
+        });
+    }
+
+    /* ══════════════════════════════════════════
+       FakeStore Handlers
+    ══════════════════════════════════════════ */
+    async function getAllProducts() {
+        showLoader('loader-all');
+        document.getElementById('product-grid-all').innerHTML = '';
+        const { ok, data } = await apiFetch('/products');
+        hideLoader('loader-all');
+        showResult('result-all', data, !ok);
+        if (ok && Array.isArray(data)) renderProductGrid('product-grid-all', data);
+    }
+
+    async function getProductById() {
+        const id = document.getElementById('get-product-id').value.trim();
+        if (!id) { alert('Please enter a Product ID.'); return; }
+        showLoader('loader-get-id');
+        const { ok, data } = await apiFetch(`/products/${id}`);
+        hideLoader('loader-get-id');
+        showResult('result-get-id', data, !ok);
+    }
+
+    async function createProduct() {
+        const body = {
+            title:    document.getElementById('create-title').value.trim(),
+            brand:    document.getElementById('create-brand').value.trim(),
+            model:    document.getElementById('create-model').value.trim(),
+            color:    document.getElementById('create-color').value.trim(),
+            category: document.getElementById('create-category').value.trim(),
+            discount: document.getElementById('create-discount').value.trim()
+        };
+        if (!body.title) { alert('Title is required.'); return; }
+        showLoader('loader-create');
+        const { ok, data } = await apiFetch('/products', { method: 'POST', body: JSON.stringify(body) });
+        hideLoader('loader-create');
+        showResult('result-create', data, !ok);
+    }
+
+    async function updateProduct() {
+        const id = document.getElementById('update-id').value.trim();
+        if (!id) { alert('Product ID is required.'); return; }
+        const body = {
+            model:    document.getElementById('update-model').value.trim(),
+            color:    document.getElementById('update-color').value.trim(),
+            discount: document.getElementById('update-discount').value.trim()
+        };
+        showLoader('loader-update');
+        const { ok, data } = await apiFetch(`/products/${id}`, { method: 'PUT', body: JSON.stringify(body) });
+        hideLoader('loader-update');
+        showResult('result-update', data, !ok);
+    }
+
+    async function deleteProduct() {
+        const id = document.getElementById('delete-id').value.trim();
+        if (!id) { alert('Product ID is required.'); return; }
+        if (!confirm(`Delete product #${id}? This action cannot be undone.`)) return;
+        showLoader('loader-delete');
+        const { ok, data } = await apiFetch(`/products/${id}`, { method: 'DELETE' });
+        hideLoader('loader-delete');
+        showResult('result-delete', data, !ok);
+    }
+
+    /* ══════════════════════════════════════════
+       DB Handlers
+    ══════════════════════════════════════════ */
+    async function createProductInDB() {
+        const body = {
+            title:      document.getElementById('db-create-title').value.trim(),
+            brand:      document.getElementById('db-create-brand').value.trim(),
+            model:      document.getElementById('db-create-model').value.trim(),
+            color:      document.getElementById('db-create-color').value.trim(),
+            price:      document.getElementById('db-create-price').value.trim()    !== '' ? Number(document.getElementById('db-create-price').value)    : null,
+            discount:   document.getElementById('db-create-discount').value.trim() !== '' ? Number(document.getElementById('db-create-discount').value) : null,
+            image:      document.getElementById('db-create-image').value.trim(),
+            description:document.getElementById('db-create-desc').value.trim(),
+            categoryId: Number(document.getElementById('db-create-category-id').value) || null
+        };
+        if (!body.title) { alert('Title is required.'); return; }
+        showLoader('loader-db-create');
+        const { ok, data } = await apiFetch('/products/db/create', { method: 'POST', body: JSON.stringify(body) });
+        hideLoader('loader-db-create');
+        showResult('result-db-create', data, !ok);
+    }
+
+    async function getProductsFromDB() {
+        showLoader('loader-db-all');
+        document.getElementById('product-grid-db').innerHTML = '';
+        const { ok, data } = await apiFetch('/products/db');
+        hideLoader('loader-db-all');
+        showResult('result-db-all', data, !ok);
+        if (ok && Array.isArray(data)) renderProductGrid('product-grid-db', data);
+    }
+
+    async function getDBProductById() {
+        const id = document.getElementById('db-get-id').value.trim();
+        if (!id) { alert('Please enter a Product ID.'); return; }
+        showLoader('loader-db-get-id');
+        const { ok, data } = await apiFetch(`/products/db/${id}`);
+        hideLoader('loader-db-get-id');
+        showResult('result-db-get-id', data, !ok);
+    }
+
+    async function getProductWithCategory() {
+        const id = document.getElementById('prod-cat-id').value.trim();
+        if (!id) { alert('Please enter a Product ID.'); return; }
+        showLoader('loader-prod-cat');
+        const { ok, data } = await apiFetch(`/products/db/product/categories/${id}`);
+        hideLoader('loader-prod-cat');
+        showResult('result-prod-cat', data, !ok);
+    }
+
+    async function getExpensiveProducts() {
+        const price = document.getElementById('min-price').value.trim();
+        if (!price) { alert('Please enter a minimum price.'); return; }
+        showLoader('loader-expensive');
+        const { ok, data } = await apiFetch(`/products/db/product/${price}`);
+        hideLoader('loader-expensive');
+        showResult('result-expensive', data, !ok);
+    }
+
+    async function searchByName() {
+        const name = document.getElementById('search-name').value.trim();
+        if (!name) { alert('Please enter a product name.'); return; }
+        showLoader('loader-search-name');
+        const { ok, data } = await apiFetch(`/products/db/product/productname/${encodeURIComponent(name)}`);
+        hideLoader('loader-search-name');
+        showResult('result-search-name', data, !ok);
+    }
+</script>
+
+</body>
+</html>

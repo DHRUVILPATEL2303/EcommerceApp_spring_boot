@@ -1,42 +1,14 @@
 package com.example.demo.mappers;
 
-import com.example.demo.dto.*;
+import com.example.demo.dto.ProductWIthCategoryDTO;
+import com.example.demo.dto.ProductsDTO;
 import com.example.demo.entities.Category;
 import com.example.demo.entities.Product;
 import com.example.demo.repository.CategoryRepository;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 public class ProductMappers {
 
-    public static List<ProductsDTO> toListProductsDTO(FakeStoreProductsDTO fakeStoreProductsDTO) {
-        return fakeStoreProductsDTO.getProducts().stream().map(
-                        products -> ProductsDTO.builder()
-                                .id(Long.valueOf(products.getId()))
-                                .title(products.getTitle())
-                                .price(products.getPrice())
-                                .image(products.getImage())
-                                .description(products.getDescription())
-                                .discount(products.getDiscount())
-                                .build())
-                .toList();
-    }
-
-    public static ProductsDTO toProductDTO(FakeStoreSpecificProductDTO fakeStoreSpecificProductDTO){
-        FakeStoreProductDTO p = fakeStoreSpecificProductDTO.getProduct();
-
-        return ProductsDTO.builder()
-                .id(p.getId().longValue())
-                .title(p.getTitle())
-                .price(p.getPrice())
-                .description(p.getDescription())
-                .discount(p.getDiscount())
-                .image(p.getImage())
-                .build();
-    }
-
-    public static ProductsDTO toDTO(Product product){
+    public static ProductsDTO toDTO(Product product) {
         return ProductsDTO.builder()
                 .id(product.getId().longValue())
                 .price(product.getPrice())
@@ -45,15 +17,12 @@ public class ProductMappers {
                 .discount(product.getDiscount())
                 .color(product.getColor())
                 .brand(product.getBrand())
-
                 .description(product.getDescription())
                 .popular(product.isPopular())
                 .model(product.getModel())
                 .categoryId(product.getCategory().getId())
                 .build();
-
     }
-
 
     public static Product toEntity(ProductsDTO dto, CategoryRepository categoryRepository) {
         Category category = categoryRepository.findById(dto.getCategoryId())
@@ -70,7 +39,6 @@ public class ProductMappers {
                 .description(dto.getDescription())
                 .popular(dto.isPopular())
                 .category(category)
-
                 .build();
     }
 
@@ -86,7 +54,7 @@ public class ProductMappers {
                 .title(product.getTitle())
                 .brand(product.getBrand())
                 .popular(product.isPopular())
-                 .category(CategoryMapper.toDTO(product.getCategory()))
+                .category(CategoryMapper.toDTO(product.getCategory()))
                 .build();
     }
 }

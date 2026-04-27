@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Categories – Ecommerce App</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<header class="navbar">
+    <a href="index.html" class="brand">🛒 EcommerceApp</a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="categories.html" class="active">Categories</a>
+    </nav>
+</header>
+
+<!-- ── Hero ── -->
+<div class="page-hero">
+    <h1>🗂️ Categories</h1>
+    <p>Manage product categories and explore which products belong to each category.</p>
+</div>
+
+<main>
+
+    <!-- ════════════════════════════════════════
+         GET All Categories (FakeStore)
+    ═══════════════════════════════════════════ -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Get All Categories</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/categories</code>
+        </div>
+        <p style="font-size:.9rem;color:var(--muted);margin-bottom:1rem;">
+            Fetches all categories from the FakeStore API.
+        </p>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="getAllCategories()">▶ Fetch Categories</button>
+        </div>
+        <div class="loader" id="loader-all-cat"></div>
+        <div id="result-all-cat" class="result-box"></div>
+        <div id="category-list-all" class="category-list"></div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         POST Create Category
+    ═══════════════════════════════════════════ -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-post">POST</span>
+            <h2>Create Category</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/categories/create</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="cat-create-name">Category Name *</label>
+                <input type="text" id="cat-create-name" placeholder="e.g. Electronics" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="createCategory()">✚ Create Category</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('cat-create-name').value=''">✕ Clear</button>
+        </div>
+        <div class="loader" id="loader-cat-create"></div>
+        <div id="result-cat-create" class="result-box"></div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         DB Section
+    ═══════════════════════════════════════════ -->
+    <h2 id="db-section" style="margin-bottom:1rem;margin-top:2rem;font-size:1.15rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">
+        Database Categories
+    </h2>
+
+    <!-- GET category by ID from DB -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Get Category by ID (DB)</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/categories/db/{id}</code>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="db-cat-id">Category ID</label>
+                <input type="number" id="db-cat-id" placeholder="e.g. 1" min="1" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="getCategoryById()">▶ Fetch</button>
+        </div>
+        <div class="loader" id="loader-db-cat-id"></div>
+        <div id="result-db-cat-id" class="result-box"></div>
+    </div>
+
+    <!-- GET all products by category ID -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Get Products by Category ID</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/categories/db/products/{id}</code>
+        </div>
+        <p style="font-size:.9rem;color:var(--muted);margin-bottom:1rem;">
+            Returns a flat list of products that belong to the given category.
+        </p>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="cat-products-id">Category ID</label>
+                <input type="number" id="cat-products-id" placeholder="e.g. 1" min="1" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="getProductsByCategory()">▶ Fetch Products</button>
+        </div>
+        <div class="loader" id="loader-cat-products"></div>
+        <div id="result-cat-products" class="result-box"></div>
+        <div id="product-grid-cat" class="product-grid"></div>
+    </div>
+
+    <!-- GET category with all products (DTO) -->
+    <div class="card">
+        <div class="card-header">
+            <span class="badge badge-get">GET</span>
+            <h2>Get Category with All Products</h2>
+            <code style="margin-left:auto;font-size:.8rem;">/categories/db/category/products/{id}</code>
+        </div>
+        <p style="font-size:.9rem;color:var(--muted);margin-bottom:1rem;">
+            Returns the category details together with all its products embedded.
+        </p>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="cat-all-products-id">Category ID</label>
+                <input type="number" id="cat-all-products-id" placeholder="e.g. 1" min="1" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="getCategoryWithProducts()">▶ Fetch</button>
+        </div>
+        <div class="loader" id="loader-cat-all-products"></div>
+        <div id="result-cat-all-products" class="result-box"></div>
+        <div id="cat-detail-panel" style="display:none;margin-top:1rem;"></div>
+    </div>
+
+</main>
+
+<script>
+    /* ── Helpers ── */
+    function showLoader(id)  { document.getElementById(id).classList.add('visible'); }
+    function hideLoader(id)  { document.getElementById(id).classList.remove('visible'); }
+
+    function showResult(id, data, isError) {
+        const el = document.getElementById(id);
+        el.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+        el.className = 'result-box visible ' + (isError ? 'error' : 'success');
+    }
+
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;');
+    }
+
+    function renderProductGrid(containerId, products) {
+        const grid = document.getElementById(containerId);
+        if (!Array.isArray(products) || products.length === 0) {
+            grid.innerHTML = '<p style="color:var(--muted);padding:.5rem">No products found.</p>';
+            return;
+        }
+        grid.innerHTML = products.map(p => `
+            <div class="product-card">
+                ${p.image ? `<img class="pc-img" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title || '')}"/>` : ''}
+                <div class="pc-title">${escapeHtml(p.title || '—')}</div>
+                <div class="pc-meta">Brand: ${escapeHtml(p.brand || '—')} &nbsp;|&nbsp; Model: ${escapeHtml(p.model || '—')}</div>
+                <div class="pc-meta">Color: ${escapeHtml(p.color || '—')}</div>
+                <div class="pc-price">$${p.price ?? '—'}${p.discount ? ` <span style="font-size:.8rem;color:var(--success)">-${p.discount}%</span>` : ''}</div>
+            </div>`).join('');
+        grid.querySelectorAll('img.pc-img').forEach(img => {
+            img.addEventListener('error', () => img.classList.add('img-error'));
+        });
+    }
+
+    async function apiFetch(url, options = {}) {
+        const response = await fetch(url, {
+            headers: { 'Content-Type': 'application/json' },
+            ...options
+        });
+        const text = await response.text();
+        try { return { ok: response.ok, data: JSON.parse(text) }; }
+        catch { return { ok: response.ok, data: text }; }
+    }
+
+    /* ══════════════════════════════════════════
+       Handlers
+    ══════════════════════════════════════════ */
+    async function getAllCategories() {
+        showLoader('loader-all-cat');
+        document.getElementById('category-list-all').innerHTML = '';
+        const { ok, data } = await apiFetch('/categories');
+        hideLoader('loader-all-cat');
+        showResult('result-all-cat', data, !ok);
+        if (ok && Array.isArray(data)) {
+            const list = document.getElementById('category-list-all');
+            list.innerHTML = data.map(c =>
+                `<span class="category-chip">${escapeHtml(c.name || String(c))}</span>`
+            ).join('');
+        }
+    }
+
+    async function createCategory() {
+        const name = document.getElementById('cat-create-name').value.trim();
+        if (!name) { alert('Category name is required.'); return; }
+        const body = { name };
+        showLoader('loader-cat-create');
+        const { ok, data } = await apiFetch('/categories/create', { method: 'POST', body: JSON.stringify(body) });
+        hideLoader('loader-cat-create');
+        showResult('result-cat-create', data, !ok);
+        if (ok) document.getElementById('cat-create-name').value = '';
+    }
+
+    async function getCategoryById() {
+        const id = document.getElementById('db-cat-id').value.trim();
+        if (!id) { alert('Please enter a Category ID.'); return; }
+        showLoader('loader-db-cat-id');
+        const { ok, data } = await apiFetch(`/categories/db/${id}`);
+        hideLoader('loader-db-cat-id');
+        showResult('result-db-cat-id', data, !ok);
+    }
+
+    async function getProductsByCategory() {
+        const id = document.getElementById('cat-products-id').value.trim();
+        if (!id) { alert('Please enter a Category ID.'); return; }
+        showLoader('loader-cat-products');
+        document.getElementById('product-grid-cat').innerHTML = '';
+        const { ok, data } = await apiFetch(`/categories/db/products/${id}`);
+        hideLoader('loader-cat-products');
+        showResult('result-cat-products', data, !ok);
+        if (ok && Array.isArray(data)) renderProductGrid('product-grid-cat', data);
+    }
+
+    async function getCategoryWithProducts() {
+        const id = document.getElementById('cat-all-products-id').value.trim();
+        if (!id) { alert('Please enter a Category ID.'); return; }
+        showLoader('loader-cat-all-products');
+        const panel = document.getElementById('cat-detail-panel');
+        panel.style.display = 'none';
+        const { ok, data } = await apiFetch(`/categories/db/category/products/${id}`);
+        hideLoader('loader-cat-all-products');
+        showResult('result-cat-all-products', data, !ok);
+
+        if (ok && data && typeof data === 'object') {
+            const products = data.productsDTOS || [];
+            panel.style.display = 'block';
+            panel.innerHTML = `
+                <div style="margin-bottom:.75rem">
+                    <strong>Category:</strong> ${escapeHtml(data.name || '—')}
+                    &nbsp;|&nbsp; <strong>ID:</strong> ${escapeHtml(String(data.id ?? '—'))}
+                    &nbsp;|&nbsp; <strong>Products:</strong> ${products.length}
+                </div>
+                <div class="product-grid">
+                    ${products.length === 0
+                        ? '<p style="color:var(--muted)">No products in this category.</p>'
+                        : products.map(p => `
+                            <div class="product-card">
+                                ${p.image ? `<img class="pc-img" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title||'')}"/>` : ''}
+                                <div class="pc-title">${escapeHtml(p.title||'—')}</div>
+                                <div class="pc-meta">Brand: ${escapeHtml(p.brand||'—')}</div>
+                                <div class="pc-price">$${p.price??'—'}</div>
+                            </div>`).join('')
+                    }
+                </div>`;
+            panel.querySelectorAll('img.pc-img').forEach(img => {
+                img.addEventListener('error', () => img.classList.add('img-error'));
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

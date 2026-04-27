@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecommerce App</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<header class="navbar">
+    <a href="index.html" class="brand">🛒 EcommerceApp</a>
+    <nav>
+        <a href="index.html" class="active">Home</a>
+        <a href="products.html">Products</a>
+        <a href="categories.html">Categories</a>
+    </nav>
+</header>
+
+<!-- ── Hero ── -->
+<div class="page-hero">
+    <h1>Ecommerce App – Spring Boot</h1>
+    <p>A REST API-powered storefront built with Spring Boot, JPA &amp; FakeStore integration.</p>
+</div>
+
+<!-- ── Main ── -->
+<main>
+
+    <!-- Quick navigation -->
+    <div class="features-grid">
+        <a href="products.html" class="feature-card">
+            <div class="icon">📦</div>
+            <h3>Products</h3>
+            <p>Browse, create, update &amp; delete products via FakeStore and the local database.</p>
+        </a>
+        <a href="categories.html" class="feature-card">
+            <div class="icon">🗂️</div>
+            <h3>Categories</h3>
+            <p>Manage product categories and explore which products belong to each category.</p>
+        </a>
+        <a href="products.html#db-section" class="feature-card">
+            <div class="icon">🗄️</div>
+            <h3>DB Products</h3>
+            <p>Create and fetch products stored directly in the MySQL database.</p>
+        </a>
+        <a href="categories.html#db-section" class="feature-card">
+            <div class="icon">🔍</div>
+            <h3>DB Categories</h3>
+            <p>Lookup categories from the database and view all associated products.</p>
+        </a>
+    </div>
+
+    <!-- Endpoint reference -->
+    <div class="card" style="margin-top:2.5rem">
+        <div class="card-header">
+            <h2>📋 API Endpoint Reference</h2>
+        </div>
+
+        <h3 style="margin-bottom:.5rem;font-size:.95rem;">Products &nbsp;<code>/products</code></h3>
+        <table class="endpoint-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/products</code></td>                                     <td>Get all products (FakeStore)</td></tr>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/products/{id}</code></td>                                <td>Get a specific product by ID (FakeStore)</td></tr>
+                <tr><td><span class="badge badge-post">POST</span></td><td><code>/products</code></td>                                     <td>Create a product (FakeStore)</td></tr>
+                <tr><td><span class="badge badge-put">PUT</span></td>  <td><code>/products/{id}</code></td>                                <td>Update a product (FakeStore)</td></tr>
+                <tr><td><span class="badge badge-delete">DELETE</span></td><td><code>/products/{id}</code></td>                           <td>Delete a product (FakeStore)</td></tr>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/products/db</code></td>                                  <td>Get all products from DB</td></tr>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/products/db/{id}</code></td>                             <td>Get product by ID from DB</td></tr>
+                <tr><td><span class="badge badge-post">POST</span></td><td><code>/products/db/create</code></td>                           <td>Create a product in DB</td></tr>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/products/db/product/categories/{id}</code></td>          <td>Get product with its category</td></tr>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/products/db/product/{minprice}</code></td>               <td>Get products above a minimum price</td></tr>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/products/db/product/productname/{name}</code></td>       <td>Search products by name</td></tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin:1.25rem 0 .5rem;font-size:.95rem;">Categories &nbsp;<code>/categories</code></h3>
+        <table class="endpoint-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/categories</code></td>                             <td>Get all categories (FakeStore)</td></tr>
+                <tr><td><span class="badge badge-post">POST</span></td><td><code>/categories/create</code></td>                       <td>Create a category in DB</td></tr>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/categories/db/{id}</code></td>                      <td>Get specific category by ID from DB</td></tr>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/categories/db/products/{id}</code></td>             <td>Get all products by category ID</td></tr>
+                <tr><td><span class="badge badge-get">GET</span></td>  <td><code>/categories/db/category/products/{id}</code></td>    <td>Get category with all its products</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+</body>
+</html>

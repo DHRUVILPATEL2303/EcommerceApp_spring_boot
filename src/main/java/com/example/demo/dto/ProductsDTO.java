@@ -13,8 +13,8 @@ public class ProductsDTO {
     private String brand;
     private String model;
     private String color;
-    private int price;
-    private int discount;
+    private Integer price;
+    private Integer discount;
     private String image;
     private String description;
     private boolean popular;

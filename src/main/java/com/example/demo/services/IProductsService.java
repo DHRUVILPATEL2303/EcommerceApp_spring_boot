@@ -1,6 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.AllProductsOfCategoryDTO;
 import com.example.demo.dto.ProductWIthCategoryDTO;
 import com.example.demo.dto.ProductsDTO;
 

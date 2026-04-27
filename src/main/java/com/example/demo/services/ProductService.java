@@ -5,7 +5,6 @@ import com.example.demo.dto.ProductsDTO;
 import com.example.demo.entities.Category;
 import com.example.demo.entities.Product;
 import com.example.demo.exceptions.ProductNotFoundException;
-import com.example.demo.mappers.CategoryMapper;
 import com.example.demo.mappers.ProductMappers;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.ProductRepository;
@@ -56,8 +55,8 @@ public class ProductService implements IProductsService {
         if (productDTO.getColor() != null) existing.setColor(productDTO.getColor());
         if (productDTO.getImage() != null) existing.setImage(productDTO.getImage());
         if (productDTO.getDescription() != null) existing.setDescription(productDTO.getDescription());
-        if (productDTO.getPrice() != 0) existing.setPrice(productDTO.getPrice());
-        if (productDTO.getDiscount() != 0) existing.setDiscount(productDTO.getDiscount());
+        if (productDTO.getPrice() != null) existing.setPrice(productDTO.getPrice());
+        if (productDTO.getDiscount() != null) existing.setDiscount(productDTO.getDiscount());
         existing.setPopular(productDTO.isPopular());
 
         if (productDTO.getCategoryId() != null) {
